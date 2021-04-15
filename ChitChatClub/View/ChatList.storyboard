@@ -18,9 +18,9 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kps-rn-lxP">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                                <color key="backgroundColor" systemColor="systemPurpleColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="80" id="gGP-Nu-jpO">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellId" rowHeight="80" id="gGP-Nu-jpO" customClass="ChatListTableViewCell" customModule="ChitChatClub" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gGP-Nu-jpO" id="xMa-v1-lWm">
@@ -29,6 +29,7 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="r1z-fP-o2N">
                                                     <rect key="frame" x="16" y="5" width="70" height="70"/>
+                                                    <color key="backgroundColor" systemColor="systemPinkColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="r1z-fP-o2N" secondAttribute="height" multiplier="1:1" id="ecp-J2-VCq"/>
                                                         <constraint firstAttribute="width" constant="70" id="xKw-zk-45R"/>
@@ -64,6 +65,12 @@
                                                 <constraint firstItem="k7j-bn-olV" firstAttribute="leading" secondItem="r1z-fP-o2N" secondAttribute="trailing" constant="10" id="xBn-iv-1Do"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="9QH-UN-36g" id="B2d-QG-YAK"/>
+                                            <outlet property="latestMessageLabel" destination="k7j-bn-olV" id="iiC-pI-wgo"/>
+                                            <outlet property="partnerLabel" destination="3Mj-ku-HzT" id="6Sy-s6-TLE"/>
+                                            <outlet property="userImageView" destination="r1z-fP-o2N" id="iJg-bh-6LZ"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -78,6 +85,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zI9-5O-WVD"/>
+                    <connections>
+                        <outlet property="chatListTableView" destination="Kps-rn-lxP" id="JVh-k5-HkM"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CLw-qx-A6e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -106,8 +116,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemPurpleColor">
-            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
