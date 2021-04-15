@@ -16,7 +16,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: scene as! UIWindowScene)
         self.window = window
+        window.makeKeyAndVisible()
+
+        //"ChatList.storyboard"
+        let storyboard = UIStoryboard(name: "ChatList", bundle: nil)
         
+        //"ChatList.storyboard" にある "ChatListViewController"
+        let chatListViewController = storyboard.instantiateViewController(identifier: "ChatListViewController")
+        
+        //"ChatList.storyboard" にある "ChatListViewController" は "nav"
+        let nav = UINavigationController(rootViewController: chatListViewController)
+        
+        //"nav"をトップに配置
+        window.rootViewController = nav
 
         guard let _ = (scene as? UIWindowScene) else { return }
     }
