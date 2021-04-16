@@ -11,6 +11,13 @@ class ChatRoomViewController: UIViewController {
     
     private let cellId = "cellId"
     
+    //入力用Viewをインスタンス化
+    private var chatInputAccessoryView: ChatInputAccessoryView = {
+        let view = ChatInputAccessoryView()
+        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 100)
+        return view
+    }()
+    
     @IBOutlet weak var chatRoomTableView: UITableView!
     
     override func viewDidLoad() {
@@ -22,7 +29,20 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
     }
+    
+    //入力用Viewインスタンス → 元々あるinputAccessoryViewプロパティをオーバーライドする
+    override var inputAccessoryView: UIView?{
+        get {
+            return chatInputAccessoryView
+        }
+    }
+    
+    //もう一つ、元々あるプロパティをオーバーライドする
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
 }
+
 
 extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
     
@@ -39,6 +59,4 @@ extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
         let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         return cell
     }
-    
-    
 }
