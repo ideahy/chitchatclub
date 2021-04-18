@@ -5,12 +5,33 @@
 //  Created by 山本英明 on 2021/04/16.
 //
 
+//
+//Delegateを使って入力テキストを大元のコントローラに渡す
+// -> Protocolを作成する -> weak var delegate
+//
+
+
 import UIKit
+
+//循環参照を防ぐためにclassを追加
+protocol ChatInputAccessoryViewDelegate: class {
+    func tappedSendButton(text: String)
+}
 
 class ChatInputAccessoryView: UIView {
     
     @IBOutlet weak var chatTextView: UITextView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBAction func tappedSendButton(_ sender: Any) {
+        //テキスト内に何もない場合はリターンを返す
+        guard let text = chatTextView.text else { return }
+        //Delegateを使って入力テキストを大元のコントローラに渡す
+        delegate?.tappedSendButton(text: text)
+        //ChatRoomViewControllerでdelegateを用いてデータを受け取る
+    }
+    
+    //Delegateを使って入力テキストを大元のコントローラに渡す
+    weak var delegate: ChatInputAccessoryViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)

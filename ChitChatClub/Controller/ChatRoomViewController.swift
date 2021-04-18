@@ -12,9 +12,12 @@ class ChatRoomViewController: UIViewController {
     private let cellId = "cellId"
     
     //入力用Viewをインスタンス化
-    private var chatInputAccessoryView: ChatInputAccessoryView = {
+    //selfが呼び出せないのでlazyを追加
+    private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
         view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 100)
+        //Delegateを使って入力テキストを大元のコントローラに渡す(ChatInputAccessoryView続き)
+        view.delegate = self
         return view
     }()
     
@@ -43,6 +46,11 @@ class ChatRoomViewController: UIViewController {
     }
 }
 
+extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
+    func tappedSendButton(text: String) {
+        print("ChatInputAccessoryViewDelegate text: ", text)
+    }
+}
 
 extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
     
