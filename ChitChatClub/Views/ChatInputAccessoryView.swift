@@ -16,7 +16,7 @@ class ChatInputAccessoryView: UIView {
         super.init(frame: frame)
         nibInit()
         setupViews()
-//        autoresizingMask = .flexibleHeight
+        autoresizingMask = .flexibleHeight
     }
     
     private func setupViews() {
