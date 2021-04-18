@@ -29,6 +29,10 @@ class ChatInputAccessoryView: UIView {
         sendButton.contentHorizontalAlignment = .fill
         sendButton.contentVerticalAlignment = .fill
         sendButton.isEnabled = false
+        
+        chatTextView.text = ""
+        //入力テキストを常に保存してキープ
+        chatTextView.delegate = self
     }
     
     override var intrinsicContentSize: CGSize{
@@ -47,5 +51,17 @@ class ChatInputAccessoryView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+//入力テキストを常に保存してキープ
+extension ChatInputAccessoryView: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        print("textView.text: ", textView.text)
+        if textView.text.isEmpty{
+            sendButton.isEnabled = false
+        } else {
+            sendButton.isEnabled = true
+        }
     }
 }
