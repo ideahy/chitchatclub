@@ -56,6 +56,12 @@ class ChatInputAccessoryView: UIView {
         chatTextView.delegate = self
     }
     
+    //チャット送信後に送信ボタンを押せなくする
+    func removeText() {
+        chatTextView.text = ""
+        sendButton.isEnabled = false
+    }
+    
     override var intrinsicContentSize: CGSize{
         return .zero
     }

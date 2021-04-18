@@ -10,6 +10,8 @@ import UIKit
 class ChatRoomViewController: UIViewController {
     
     private let cellId = "cellId"
+    //動作用のメッセージ受け渡し配列
+    private var messages = [String]()
     
     //入力用Viewをインスタンス化
     //selfが呼び出せないのでlazyを追加
@@ -48,6 +50,10 @@ class ChatRoomViewController: UIViewController {
 
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
     func tappedSendButton(text: String) {
+        messages.append(text)
+        //送信後には送信ボタンを押せなくする
+        chatInputAccessoryView.removeText()
+        chatRoomTableView.reloadData()
         print("ChatInputAccessoryViewDelegate text: ", text)
     }
 }
@@ -60,11 +66,15 @@ extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        //動作用のメッセージ受け渡し配列(セルの数)
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        //as! ChatRoomTableViewCell -> アクセス可能
+        let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatRoomTableViewCell
+        //送信した値を表示する
+        cell.messageTextView.text = messages[indexPath.row]
         return cell
     }
 }
