@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class SignUpViewController: UIViewController {
     
@@ -25,6 +28,7 @@ class SignUpViewController: UIViewController {
         
         //アクションをコードで実装する
         profileImageButton.addTarget(self, action: #selector(tappedProfileImageButton), for: .touchUpInside)
+        registerButton.addTarget(self, action: #selector(tappedRegisterButton), for: .touchUpInside)
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -36,7 +40,6 @@ class SignUpViewController: UIViewController {
     }
     
     @objc private func tappedProfileImageButton() {
-        print("tappedProfileImageButton")
         //アルバムが表示される
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
@@ -45,13 +48,24 @@ class SignUpViewController: UIViewController {
         self.present(imagePickerController, animated: true, completion: nil)
     }
 
+    @objc private func tappedRegisterButton() {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
+            if let err = err {
+                print("認証情報の保存に失敗しました。\(err)")
+                return
+            }
+            print("認証情報の保存に成功しました。")
+        }
+    }
 }
 
 //
 extension SignUpViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         //textField全てに適用
-        print("textField.text: ", textField.text)
         let emailIsEmpty = emailTextField.text?.isEmpty ?? false
         let passwordIsEmpty = passwordTextField.text?.isEmpty ?? false
         let usernameIsEmpty = usernameTextField.text?.isEmpty ?? false
