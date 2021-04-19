@@ -58,6 +58,24 @@ class SignUpViewController: UIViewController {
                 return
             }
             print("認証情報の保存に成功しました。")
+            //ユーザー情報をFSに保存する
+            //UID
+            guard let uid = res?.user.uid else { return }
+            guard let username = self.usernameTextField.text else { return }
+            //email,username,date
+            let docData = [
+                "email": email,
+                "username": username,
+                "createdAt": Timestamp()
+            ] as [String : Any]
+            Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
+                if let err = err {
+                    print("Firestoreへの保存に失敗しました。\(err)")
+                    return
+                }
+                print("Firestoreへの情報の保存が成功しました。")
+                self.dismiss(animated: true, completion: nil)
+            }
         }
     }
 }
