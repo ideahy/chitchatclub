@@ -8,11 +8,15 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
+import FirebaseStorage
 
 class ChatListViewController: UIViewController {
 
     //セル指定用(SB上にも要記入)
     private let cellId = "cellId"
+    //フェッチしたユーザー情報を格納する
+    private var users = [User]()
     
     @IBOutlet weak var chatListTableView: UITableView!
     
@@ -27,13 +31,15 @@ class ChatListViewController: UIViewController {
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        //チャットユーザーリストが起動した際に画面遷移
-        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
-        let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
-        //サインアップ用のモーダルをフル画面で表示
-        signUpViewController.modalPresentationStyle = .fullScreen
-        self.present(signUpViewController, animated: true, completion: nil)
-        
+        //会員登録済みである場合も表示されるため表示の切り分け
+        if Auth.auth().currentUser?.uid == nil{
+            //チャットユーザーリストが起動した際に画面遷移
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+            let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
+            //サインアップ用のモーダルをフル画面で表示
+            signUpViewController.modalPresentationStyle = .fullScreen
+            self.present(signUpViewController, animated: true, completion: nil)
+        }
     }
     
     //成功しましたログの前にユーザー情報が出てきているので変更
@@ -46,18 +52,24 @@ class ChatListViewController: UIViewController {
     
     //ユーザー情報が正しく受け取れるかを確認するメソッド
     private func fetchUserInfoFromFirestore() {
+        //Firestoreから保存されている値をフェッチ
         Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
             if let err = err{
                 print("user情報の取得に失敗しました。\(err)")
                 return
             }
-            print("user情報の取得に成功しました。")
             snapshots?.documents.forEach({ (snapshot) in
-                let data = snapshot.data()
-                print("data: ", data)
+                let dic = snapshot.data()
+                //フェッチしたdata(dic)をuserに変換
+                let user = User.init(dic: dic)
+                self.users.append(user)
+                self.chatListTableView.reloadData()
+                //念の為確認(ユーザーネームだけ表示する)
+                self.users.forEach { (user) in
+                    print("user.username: ", user.username)
+                }
             })
         }
-        
     }
 }
 
@@ -70,12 +82,14 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return users.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //セルを指定して紐づける
-        let cell = chatListTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
+        let cell = chatListTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatListTableViewCell
+        //下にあるChatListTableViewCellにアクセス可能
+        cell.user = users[indexPath.row]
         return cell
     }
     
@@ -90,6 +104,18 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
 
 class ChatListTableViewCell: UITableViewCell {
     
+    //ユーザー情報をここで渡す
+    var user: User? {
+        didSet{
+            if let user = user{
+                partnerLabel.text = user.username
+                //userImageView.image = user?.profileImageUrl
+                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
+                latestMessageLabel.text = user.email
+            }
+        }
+    }
+    
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var latestMessageLabel: UILabel!
     @IBOutlet weak var partnerLabel: UILabel!
@@ -103,5 +129,14 @@ class ChatListTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    //作成時間表記のフォーマット
+    private func dateFormatterForDateLabel(date: Date) -> String{
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.timeStyle = .short
+        formatter.locale = Locale(identifier: "ja_JP")
+        return formatter.string(from: date)
     }
 }
