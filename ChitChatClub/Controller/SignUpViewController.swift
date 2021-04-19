@@ -61,10 +61,20 @@ class SignUpViewController: UIViewController {
                 return
             }
             print("FireStorageへの情報の保存に成功しました。")
+            storageRef.downloadURL { (url, err) in
+                if let err = err {
+                    print("Firestoreからのurlのダウンロードに失敗しました。\(err)")
+                    return
+                }
+                print("Firestoreからのurlのダウンロードに成功しました。")
+                guard let urlString = url?.absoluteString else { return }
+                print("urlString: ", urlString)
+                self.createUserToFirestore(profileImageUrl: urlString)
+            }
         }
     }
     
-    private func createUserToFirestore() {
+    private func createUserToFirestore(profileImageUrl: String) {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
@@ -82,7 +92,8 @@ class SignUpViewController: UIViewController {
             let docData = [
                 "email": email,
                 "username": username,
-                "createdAt": Timestamp()
+                "createdAt": Timestamp(),
+                "profileImageUrl": profileImageUrl
             ] as [String : Any]
             Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
                 if let err = err {
