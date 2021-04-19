@@ -8,5 +8,8 @@ target 'ChitChatClub' do
   # Pods for ChitChatClub
 
   pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Storage'
 
 end

@@ -25,6 +25,14 @@ class SignUpViewController: UIViewController {
         
         //アクションをコードで実装する
         profileImageButton.addTarget(self, action: #selector(tappedProfileImageButton), for: .touchUpInside)
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        usernameTextField.delegate = self
+        
+        //初期はボタン押せない
+        registerButton.isEnabled = false
+        registerButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
     }
     
     @objc private func tappedProfileImageButton() {
@@ -37,6 +45,25 @@ class SignUpViewController: UIViewController {
         self.present(imagePickerController, animated: true, completion: nil)
     }
 
+}
+
+//
+extension SignUpViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        //textField全てに適用
+        print("textField.text: ", textField.text)
+        let emailIsEmpty = emailTextField.text?.isEmpty ?? false
+        let passwordIsEmpty = passwordTextField.text?.isEmpty ?? false
+        let usernameIsEmpty = usernameTextField.text?.isEmpty ?? false
+        //一つでも空があるとボタンを押せなくする
+        if emailIsEmpty || passwordIsEmpty || usernameIsEmpty {
+            registerButton.isEnabled = false
+            registerButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
+        } else {
+            registerButton.isEnabled = true
+            registerButton.backgroundColor = .rgb(red: 0, green: 185, blue: 0)
+        }
+    }
 }
 
 //アルバムが表示される
