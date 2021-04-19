@@ -24,6 +24,11 @@ class ChatListViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        //チャットユーザーリストが起動した際に画面遷移
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+        let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
+        self.present(signUpViewController, animated: true, completion: nil)
     }
 }
 

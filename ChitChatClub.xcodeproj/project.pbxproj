@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E023EA7262D0F220054B6EA /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E023EA6262D0F220054B6EA /* SignUp.storyboard */; };
+		5E023EAA262D1A820054B6EA /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E023EA9262D1A820054B6EA /* SignUpViewController.swift */; };
 		5E22F70D26294C6200E9154C /* ChatInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5E22F70C26294C6200E9154C /* ChatInputAccessoryView.xib */; };
 		5E22F71226295E9400E9154C /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E22F71126295E9400E9154C /* ChatInputAccessoryView.swift */; };
 		5E48AD9926291BA6000C48CF /* ChatRoom.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E48AD9826291BA6000C48CF /* ChatRoom.storyboard */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E023EA6262D0F220054B6EA /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
+		5E023EA9262D1A820054B6EA /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		5E22F70C26294C6200E9154C /* ChatInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatInputAccessoryView.xib; sourceTree = "<group>"; };
 		5E22F71126295E9400E9154C /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		5E48AD9826291BA6000C48CF /* ChatRoom.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChatRoom.storyboard; sourceTree = "<group>"; };
@@ -91,6 +95,7 @@
 				5EF9755A26280B0000661738 /* ChatList.storyboard */,
 				5E48AD9826291BA6000C48CF /* ChatRoom.storyboard */,
 				5EF9755026280A9E00661738 /* LaunchScreen.storyboard */,
+				5E023EA6262D0F220054B6EA /* SignUp.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -143,6 +148,7 @@
 			children = (
 				5EF9755E26280BE000661738 /* ChatListViewController.swift */,
 				5E48AD9C26291C74000C48CF /* ChatRoomViewController.swift */,
+				5E023EA9262D1A820054B6EA /* SignUpViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -220,6 +226,7 @@
 				5EF9754F26280A9E00661738 /* Assets.xcassets in Resources */,
 				5EF9755B26280B0000661738 /* ChatList.storyboard in Resources */,
 				5E22F70D26294C6200E9154C /* ChatInputAccessoryView.xib in Resources */,
+				5E023EA7262D0F220054B6EA /* SignUp.storyboard in Resources */,
 				5E48AD9926291BA6000C48CF /* ChatRoom.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,6 +282,7 @@
 			files = (
 				5EF9754626280A9C00661738 /* AppDelegate.swift in Sources */,
 				5E22F71226295E9400E9154C /* ChatInputAccessoryView.swift in Sources */,
+				5E023EAA262D1A820054B6EA /* SignUpViewController.swift in Sources */,
 				5EF9755F26280BE000661738 /* ChatListViewController.swift in Sources */,
 				5E48AD9D26291C74000C48CF /* ChatRoomViewController.swift in Sources */,
 				5E82DB482629119700636647 /* UIColor-Extention.swift in Sources */,
