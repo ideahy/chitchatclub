@@ -1,0 +1,6 @@
+framework module Pods_ChitChatClub {
+  umbrella header "Pods-ChitChatClub-umbrella.h"
+
+  export *
+  module * { export * }
+}
