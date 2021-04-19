@@ -9,6 +9,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
 
 class SignUpViewController: UIViewController {
     
@@ -49,6 +50,21 @@ class SignUpViewController: UIViewController {
     }
 
     @objc private func tappedRegisterButton() {
+        //画像をStorageに保存する
+        guard let image = profileImageButton.imageView?.image else { return }
+        guard let uploadImage = image.jpegData(compressionQuality: 0.3) else { return }
+        let fileName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
+        storageRef.putData(uploadImage, metadata: nil) { (metadata, err) in
+            if let err = err {
+                print("FireStorageへの情報の保存に失敗しました。\(err)")
+                return
+            }
+            print("FireStorageへの情報の保存に成功しました。")
+        }
+    }
+    
+    private func createUserToFirestore() {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
