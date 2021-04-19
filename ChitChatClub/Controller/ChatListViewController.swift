@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 class ChatListViewController: UIViewController {
 
@@ -28,7 +30,34 @@ class ChatListViewController: UIViewController {
         //チャットユーザーリストが起動した際に画面遷移
         let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
+        //サインアップ用のモーダルをフル画面で表示
+        signUpViewController.modalPresentationStyle = .fullScreen
         self.present(signUpViewController, animated: true, completion: nil)
+        
+    }
+    
+    //成功しましたログの前にユーザー情報が出てきているので変更
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //ユーザー情報が正しく受け取れるかを確認するメソッド
+        fetchUserInfoFromFirestore()
+        //受け取った情報を使いやすいようにModelに格納する
+    }
+    
+    //ユーザー情報が正しく受け取れるかを確認するメソッド
+    private func fetchUserInfoFromFirestore() {
+        Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
+            if let err = err{
+                print("user情報の取得に失敗しました。\(err)")
+                return
+            }
+            print("user情報の取得に成功しました。")
+            snapshots?.documents.forEach({ (snapshot) in
+                let data = snapshot.data()
+                print("data: ", data)
+            })
+        }
+        
     }
 }
 
