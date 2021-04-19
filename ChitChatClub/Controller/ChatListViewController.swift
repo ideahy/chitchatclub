@@ -8,11 +8,14 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import FirebaseAuth
 
 class ChatListViewController: UIViewController {
 
     //セル指定用(SB上にも要記入)
     private let cellId = "cellId"
+    //フェッチしたユーザー情報を格納する
+    private var users = [User]()
     
     @IBOutlet weak var chatListTableView: UITableView!
     
@@ -27,13 +30,15 @@ class ChatListViewController: UIViewController {
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        //チャットユーザーリストが起動した際に画面遷移
-        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
-        let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
-        //サインアップ用のモーダルをフル画面で表示
-        signUpViewController.modalPresentationStyle = .fullScreen
-        self.present(signUpViewController, animated: true, completion: nil)
-        
+        //会員登録済みである場合も表示されるため表示の切り分け
+        if Auth.auth().currentUser?.uid == nil{
+            //チャットユーザーリストが起動した際に画面遷移
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+            let signUpViewController = storyboard.instantiateViewController(identifier: "SignUpViewController") as! SignUpViewController
+            //サインアップ用のモーダルをフル画面で表示
+            signUpViewController.modalPresentationStyle = .fullScreen
+            self.present(signUpViewController, animated: true, completion: nil)
+        }
     }
     
     //成功しましたログの前にユーザー情報が出てきているので変更
@@ -46,6 +51,7 @@ class ChatListViewController: UIViewController {
     
     //ユーザー情報が正しく受け取れるかを確認するメソッド
     private func fetchUserInfoFromFirestore() {
+        //Firestoreから保存されている値をフェッチ
         Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
             if let err = err{
                 print("user情報の取得に失敗しました。\(err)")
@@ -53,11 +59,16 @@ class ChatListViewController: UIViewController {
             }
             print("user情報の取得に成功しました。")
             snapshots?.documents.forEach({ (snapshot) in
-                let data = snapshot.data()
-                print("data: ", data)
+                let dic = snapshot.data()
+                //フェッチしたdata(dic)をuserに変換
+                let user = User.init(dic: dic)
+                self.users.append(user)
+                //念の為確認(ユーザーネームだけ表示する)
+                self.users.forEach { (user) in
+                    print("user.username: ", user.username)
+                }
             })
         }
-        
     }
 }
 
