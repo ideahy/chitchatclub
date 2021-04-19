@@ -74,7 +74,9 @@ extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
         //as! ChatRoomTableViewCell -> アクセス可能
         let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatRoomTableViewCell
         //送信した値を表示する
-        cell.messageTextView.text = messages[indexPath.row]
+        //cell.messageTextView.text = messages[indexPath.row]
+        //メッセージ幅に合わせてViewを可変にする
+        cell.messageText = messages[indexPath.row]
         return cell
     }
 }

@@ -9,9 +9,24 @@ import UIKit
 
 class ChatRoomTableViewCell: UITableViewCell {
 
+    //メッセージ幅に合わせてViewを可変にする
+    var messageText:String? {
+        //値を受けた際に計算をする
+        didSet{
+            guard let text = messageText else { return }
+            //!!!!!デバイスによって可変にしたい!!!!!
+            let width = estimateFrameForTextView(text: text).width + 20
+            messageTextViewWidthConstraint.constant = width
+            messageTextView.text = text
+        }
+    }
+    
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var messageTextView: UITextView!
     @IBOutlet weak var dateLabel: UILabel!
+    //メッセージ幅に合わせてViewを可変にする
+    @IBOutlet weak var messageTextViewWidthConstraint: NSLayoutConstraint!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,8 +38,14 @@ class ChatRoomTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
+    //幅を調整するためのメソッド
+    private func estimateFrameForTextView(text: String) -> CGRect {
+        //マックス値の設定
+        let size = CGSize(width: 200, height: 1000)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], context: nil)
+    }
 }
