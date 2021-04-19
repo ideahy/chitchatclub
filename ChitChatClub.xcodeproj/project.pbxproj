@@ -108,6 +108,13 @@
 			path = Extentions;
 			sourceTree = "<group>";
 		};
+		5E5E2C41262DBF3100A45171 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		5EF9753926280A9C00661738 = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +136,7 @@
 		5EF9754426280A9C00661738 /* ChitChatClub */ = {
 			isa = PBXGroup;
 			children = (
+				5E5E2C41262DBF3100A45171 /* Models */,
 				5E22F70B26294BD800E9154C /* Extentions */,
 				5E22F70926294AFC00E9154C /* Views */,
 				5E22F70826294AAD00E9154C /* Xibs */,

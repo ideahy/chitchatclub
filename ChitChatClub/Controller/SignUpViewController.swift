@@ -60,15 +60,12 @@ class SignUpViewController: UIViewController {
                 print("FireStorageへの情報の保存に失敗しました。\(err)")
                 return
             }
-            print("FireStorageへの情報の保存に成功しました。")
             storageRef.downloadURL { (url, err) in
                 if let err = err {
                     print("Firestoreからのurlのダウンロードに失敗しました。\(err)")
                     return
                 }
-                print("Firestoreからのurlのダウンロードに成功しました。")
                 guard let urlString = url?.absoluteString else { return }
-                print("urlString: ", urlString)
                 self.createUserToFirestore(profileImageUrl: urlString)
             }
         }
@@ -83,7 +80,6 @@ class SignUpViewController: UIViewController {
                 print("認証情報の保存に失敗しました。\(err)")
                 return
             }
-            print("認証情報の保存に成功しました。")
             //ユーザー情報をFSに保存する
             //UID
             guard let uid = res?.user.uid else { return }
