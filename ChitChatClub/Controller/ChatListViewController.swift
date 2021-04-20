@@ -48,35 +48,40 @@ class ChatListViewController: UIViewController {
                     switch documentChange.type {
                     //Firestoreに新規追加のみ取得
                     case .added:
-                        let dic = documentChange.document.data()
-                        //取得データをモデルに格納
-                        let chatroom = ChatRoom(dic: dic)
-                        //partnerの情報も追加
-                        guard let uid = Auth.auth().currentUser?.uid else { return }
-                        chatroom.members.forEach { (memberUid) in
-                            if memberUid != uid {
-                                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
-                                    if let err = err {
-                                        print("パートナーユーザー情報の取得に失敗しました。\(err)")
-                                        return
-                                    }
-                                    
-                                    guard let dic = snapshot?.data() else { return }
-                                    let user = User(dic: dic)
-                                    user.uid = documentChange.document.documentID
-                                    //相手側のユーザー情報を追加
-                                    chatroom.partnerUser = user
-                                    self.chatrooms.append(chatroom)
-                                    print("self.chatrooms.count: ", self.chatrooms.count)
-                                    self.chatListTableView.reloadData()
-                                }
-                            }
-                        }
+                        self.handleAddedDocumentChange(documentChange: documentChange)
                     case .modified, .removed:
                         print("nothing to do")
                     }
                 })
             }
+    }
+    
+    
+    private func handleAddedDocumentChange(documentChange: DocumentChange) {
+        let dic = documentChange.document.data()
+        //取得データをモデルに格納
+        let chatroom = ChatRoom(dic: dic)
+        //partnerの情報も追加
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        chatroom.members.forEach { (memberUid) in
+            if memberUid != uid {
+                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("パートナーユーザー情報の取得に失敗しました。\(err)")
+                        return
+                    }
+                    
+                    guard let dic = snapshot?.data() else { return }
+                    let user = User(dic: dic)
+                    user.uid = documentChange.document.documentID
+                    //相手側のユーザー情報を追加
+                    chatroom.partnerUser = user
+                    self.chatrooms.append(chatroom)
+                    print("self.chatrooms.count: ", self.chatrooms.count)
+                    self.chatListTableView.reloadData()
+                }
+            }
+        }
     }
     
     private func setupViews() {
@@ -112,7 +117,6 @@ class ChatListViewController: UIViewController {
         let storyboard = UIStoryboard.init(name: "UserList", bundle: nil)
         let userListViewController = storyboard.instantiateViewController(withIdentifier: "UserListViewController")
         let nav = UINavigationController(rootViewController: userListViewController)
-        nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: true, completion: nil)
     }
     
