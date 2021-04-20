@@ -13,7 +13,7 @@ import FirebaseStorage
 import Nuke
 
 class ChatListViewController: UIViewController {
-
+    
     //セル指定用(SB上にも要記入)
     private let cellId = "cellId"
     private var chatrooms = [ChatRoom]()
@@ -32,48 +32,51 @@ class ChatListViewController: UIViewController {
         setupViews()
         confirmLoggedInUser()
         fetchLoginUserInfo()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         fetchChatroomsInfoFromFirestore()
+        
     }
     
     private func fetchChatroomsInfoFromFirestore() {
-        Firestore.firestore().collection("chatRooms").getDocuments { (snapshots, err) in
-            if let err = err {
-                print("chatRooms情報の取得に失敗しました。\(err)")
-                return
-            }
-            
-            snapshots?.documents.forEach({ (snapshot) in
-                let dic = snapshot.data()
-                //取得データをモデルに格納する
-                let chatroom = ChatRoom(dic: dic)
-                
-                //partnerの情報も追加
-                guard let uid = Auth.auth().currentUser?.uid else { return }
-                chatroom.members.forEach { (memberUid) in
-                    if memberUid != uid {
-                        Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
-                            if let err = err {
-                                print("パートナーユーザー情報の取得に失敗しました。\(err)")
-                                return
-                            }
-                            
-                            guard let dic = snapshot?.data() else { return }
-                            let user = User(dic: dic)
-                            user.uid = snapshot?.documentID
-                            //相手側のユーザー情報を追加
-                            chatroom.partnerUser = user
-                            self.chatrooms.append(chatroom)
-                            print("self.chatrooms.count: ", self.chatrooms.count)
-                            self.chatListTableView.reloadData()
-                        }
-                    }
+        Firestore.firestore().collection("chatRooms")
+            .addSnapshotListener { (snapshots, err) in
+                if let err = err {
+                    print("chatRooms情報の取得に失敗しました。\(err)")
+                    return
                 }
-            })
-        }
+                //リアルタイム更新
+                snapshots?.documentChanges.forEach({ (documentChange) in
+                    switch documentChange.type {
+                    //Firestoreに新規追加のみ取得
+                    case .added:
+                        let dic = documentChange.document.data()
+                        //取得データをモデルに格納
+                        let chatroom = ChatRoom(dic: dic)
+                        //partnerの情報も追加
+                        guard let uid = Auth.auth().currentUser?.uid else { return }
+                        chatroom.members.forEach { (memberUid) in
+                            if memberUid != uid {
+                                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                                    if let err = err {
+                                        print("パートナーユーザー情報の取得に失敗しました。\(err)")
+                                        return
+                                    }
+                                    
+                                    guard let dic = snapshot?.data() else { return }
+                                    let user = User(dic: dic)
+                                    user.uid = documentChange.document.documentID
+                                    //相手側のユーザー情報を追加
+                                    chatroom.partnerUser = user
+                                    self.chatrooms.append(chatroom)
+                                    print("self.chatrooms.count: ", self.chatrooms.count)
+                                    self.chatListTableView.reloadData()
+                                }
+                            }
+                        }
+                    case .modified, .removed:
+                        print("nothing to do")
+                    }
+                })
+            }
     }
     
     private func setupViews() {
@@ -85,7 +88,7 @@ class ChatListViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-                
+        
         //ナビゲーションバー右側にボタンを作成
         let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
         navigationItem.rightBarButtonItem = rightBarButton
@@ -161,16 +164,16 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
 class ChatListTableViewCell: UITableViewCell {
     
     //ユーザー情報をここで渡す
-//    var user: User? {
-//        didSet{
-//            if let user = user{
-//                partnerLabel.text = user.username
-//                //userImageView.image = user?.profileImageUrl
-//                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
-//                latestMessageLabel.text = user.email
-//            }
-//        }
-//    }
+    //    var user: User? {
+    //        didSet{
+    //            if let user = user{
+    //                partnerLabel.text = user.username
+    //                //userImageView.image = user?.profileImageUrl
+    //                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
+    //                latestMessageLabel.text = user.email
+    //            }
+    //        }
+    //    }
     
     var chatroom: ChatRoom? {
         didSet {
