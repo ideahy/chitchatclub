@@ -16,6 +16,8 @@
 		5E48AD9D26291C74000C48CF /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E48AD9C26291C74000C48CF /* ChatRoomViewController.swift */; };
 		5E6EC7FC262D0A6E00CE7AFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E6EC7FB262D0A6E00CE7AFA /* GoogleService-Info.plist */; };
 		5E82DB482629119700636647 /* UIColor-Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E82DB472629119700636647 /* UIColor-Extention.swift */; };
+		5E9079C4262DD185007E69CE /* UserList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E9079C3262DD185007E69CE /* UserList.storyboard */; };
+		5E9079C7262E4F0B007E69CE /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9079C6262E4F0B007E69CE /* UserListViewController.swift */; };
 		5EEDBE7A262921DF00F17A2B /* ChatRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5EEDBE79262921DF00F17A2B /* ChatRoomTableViewCell.xib */; };
 		5EEDBE7E2629248C00F17A2B /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEDBE7D2629248C00F17A2B /* ChatRoomTableViewCell.swift */; };
 		5EF9754626280A9C00661738 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9754526280A9C00661738 /* AppDelegate.swift */; };
@@ -37,6 +39,8 @@
 		5E48AD9C26291C74000C48CF /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		5E6EC7FB262D0A6E00CE7AFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5E82DB472629119700636647 /* UIColor-Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extention.swift"; sourceTree = "<group>"; };
+		5E9079C3262DD185007E69CE /* UserList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = UserList.storyboard; sourceTree = "<group>"; };
+		5E9079C6262E4F0B007E69CE /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		5EEDBE79262921DF00F17A2B /* ChatRoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomTableViewCell.xib; sourceTree = "<group>"; };
 		5EEDBE7D2629248C00F17A2B /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		5EF9754226280A9C00661738 /* ChitChatClub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChitChatClub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +102,7 @@
 				5E48AD9826291BA6000C48CF /* ChatRoom.storyboard */,
 				5EF9755026280A9E00661738 /* LaunchScreen.storyboard */,
 				5E023EA6262D0F220054B6EA /* SignUp.storyboard */,
+				5E9079C3262DD185007E69CE /* UserList.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -160,6 +165,7 @@
 				5EF9755E26280BE000661738 /* ChatListViewController.swift */,
 				5E48AD9C26291C74000C48CF /* ChatRoomViewController.swift */,
 				5E023EA9262D1A820054B6EA /* SignUpViewController.swift */,
+				5E9079C6262E4F0B007E69CE /* UserListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -231,6 +237,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E9079C4262DD185007E69CE /* UserList.storyboard in Resources */,
 				5EEDBE7A262921DF00F17A2B /* ChatRoomTableViewCell.xib in Resources */,
 				5E6EC7FC262D0A6E00CE7AFA /* GoogleService-Info.plist in Resources */,
 				5EF9755226280A9E00661738 /* LaunchScreen.storyboard in Resources */,
@@ -296,6 +303,7 @@
 				5E023EAA262D1A820054B6EA /* SignUpViewController.swift in Sources */,
 				5EF9755F26280BE000661738 /* ChatListViewController.swift in Sources */,
 				5E48AD9D26291C74000C48CF /* ChatRoomViewController.swift in Sources */,
+				5E9079C7262E4F0B007E69CE /* UserListViewController.swift in Sources */,
 				5E2EA939262DBFE100A4CB1A /* User.swift in Sources */,
 				5E82DB482629119700636647 /* UIColor-Extention.swift in Sources */,
 				5EEDBE7E2629248C00F17A2B /* ChatRoomTableViewCell.swift in Sources */,

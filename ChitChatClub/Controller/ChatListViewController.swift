@@ -40,6 +40,11 @@ class ChatListViewController: UIViewController {
             signUpViewController.modalPresentationStyle = .fullScreen
             self.present(signUpViewController, animated: true, completion: nil)
         }
+        
+        //ナビゲーションバー右側にボタンを作成
+        let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
     }
     
     //成功しましたログの前にユーザー情報が出てきているので変更
@@ -48,6 +53,14 @@ class ChatListViewController: UIViewController {
         //ユーザー情報が正しく受け取れるかを確認するメソッド
         fetchUserInfoFromFirestore()
         //受け取った情報を使いやすいようにModelに格納する
+    }
+    
+    //ナビゲーションバー右側にボタンを作成
+    @objc private func tappedNavRightBarButton() {
+        let storyboard = UIStoryboard.init(name: "UserList", bundle: nil)
+        let userListViewController = storyboard.instantiateViewController(withIdentifier: "UserListViewController")
+        let nav = UINavigationController(rootViewController: userListViewController)
+        self.present(nav, animated: true, completion: nil)
     }
     
     //ユーザー情報が正しく受け取れるかを確認するメソッド
