@@ -64,7 +64,7 @@ class ChatListViewController: UIViewController {
     }
     
     //ユーザー情報が正しく受け取れるかを確認するメソッド
-    private func fetchUserInfoFromFirestore() {
+     private func fetchUserInfoFromFirestore() {
         //Firestoreから保存されている値をフェッチ
         Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
             if let err = err{
