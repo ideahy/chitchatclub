@@ -6,9 +6,16 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 class ChatRoomViewController: UIViewController {
     
+    var user: User?
+    var chatroom: ChatRoom?
+    
+
     private let cellId = "cellId"
     //動作用のメッセージ受け渡し配列
     private var messages = [String]()
@@ -49,12 +56,28 @@ class ChatRoomViewController: UIViewController {
 }
 
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
+    
     func tappedSendButton(text: String) {
-        messages.append(text)
-        //送信後には送信ボタンを押せなくする
+        guard let chatroomDocId = chatroom?.documentId else { return }
+        guard let name = user?.username else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         chatInputAccessoryView.removeText()
-        chatRoomTableView.reloadData()
-        print("ChatInputAccessoryViewDelegate text: ", text)
+
+        let docData = [
+            "name": name,
+            "createdAt": Timestamp(),
+            "uid": uid,
+            "message": text
+        ] as [String : Any]
+        
+        
+        Firestore.firestore().collection("chatRooms").document(chatroomDocId).collection("messages").document().setData(docData) { (err) in
+            if let err = err {
+                print("メッセージ情報の取得に失敗しました。\(err)")
+                return
+            }
+            print("メッセージの保存に成功しました。")
+        }
     }
 }
 

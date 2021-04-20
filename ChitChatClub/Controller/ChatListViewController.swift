@@ -61,6 +61,7 @@ class ChatListViewController: UIViewController {
         let dic = documentChange.document.data()
         //取得データをモデルに格納
         let chatroom = ChatRoom(dic: dic)
+        chatroom.documentId = documentChange.document.documentID
         //partnerの情報も追加
         guard let uid = Auth.auth().currentUser?.uid else { return }
         chatroom.members.forEach { (memberUid) in
@@ -159,7 +160,9 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("タップしたよ")
         let storyboard = UIStoryboard.init(name: "ChatRoom", bundle: nil)
-        let chatRoomViewController = storyboard.instantiateViewController(withIdentifier: "ChatRoomViewController")
+        let chatRoomViewController = storyboard.instantiateViewController(withIdentifier: "ChatRoomViewController") as! ChatRoomViewController
+        chatRoomViewController.user = user
+        chatRoomViewController.chatroom = chatrooms[indexPath.row]
         navigationController?.pushViewController(chatRoomViewController, animated: true)
     }
 }
