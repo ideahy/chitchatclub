@@ -15,6 +15,8 @@ class ChatListViewController: UIViewController {
 
     //セル指定用(SB上にも要記入)
     private let cellId = "cellId"
+    private var chatrooms = [ChatRoom]()
+    
     //ユーザー情報がセットされた時点でナビバーに表示したい
     private var user: User? {
         didSet {
@@ -29,6 +31,29 @@ class ChatListViewController: UIViewController {
         setupViews()
         confirmLoggedInUser()
         fetchLoginUserInfo()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchChatroomsInfoFromFirestore()
+    }
+    
+    private func fetchChatroomsInfoFromFirestore() {
+        Firestore.firestore().collection("chatRooms").getDocuments { (snapshots, err) in
+            if let err = err {
+                print("chatRooms情報の取得に失敗しました。\(err)")
+                return
+            }
+            
+            snapshots?.documents.forEach({ (snapshot) in
+                let dic = snapshot.data()
+                //取得データをモデルに格納する
+                let chatroom = ChatRoom(dic: dic)
+                self.chatrooms.append(chatroom)
+                print("self.chatrooms.count: ", self.chatrooms.count)
+                self.chatListTableView.reloadData()
+            })
+        }
     }
     
     private func setupViews() {
@@ -63,6 +88,7 @@ class ChatListViewController: UIViewController {
         let storyboard = UIStoryboard.init(name: "UserList", bundle: nil)
         let userListViewController = storyboard.instantiateViewController(withIdentifier: "UserListViewController")
         let nav = UINavigationController(rootViewController: userListViewController)
+        nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: true, completion: nil)
     }
     
