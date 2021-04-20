@@ -15,14 +15,23 @@ class ChatListViewController: UIViewController {
 
     //セル指定用(SB上にも要記入)
     private let cellId = "cellId"
-    //フェッチしたユーザー情報を格納する
-    private var users = [User]()
+    //ユーザー情報がセットされた時点でナビバーに表示したい
+    private var user: User? {
+        didSet {
+            navigationItem.title = user?.username
+        }
+    }
     
     @IBOutlet weak var chatListTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupViews()
+        confirmLoggedInUser()
+        fetchLoginUserInfo()
+    }
+    
+    private func setupViews() {
         chatListTableView.delegate = self
         chatListTableView.dataSource = self
         
@@ -30,7 +39,14 @@ class ChatListViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = .rgb(red: 39, green: 49, blue: 69)
         navigationItem.title = "トーク"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        
+                
+        //ナビゲーションバー右側にボタンを作成
+        let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
+        navigationItem.rightBarButtonItem = rightBarButton
+        navigationItem.rightBarButtonItem?.tintColor = .white
+    }
+    
+    private func confirmLoggedInUser() {
         //会員登録済みである場合も表示されるため表示の切り分け
         if Auth.auth().currentUser?.uid == nil{
             //チャットユーザーリストが起動した際に画面遷移
@@ -40,19 +56,6 @@ class ChatListViewController: UIViewController {
             signUpViewController.modalPresentationStyle = .fullScreen
             self.present(signUpViewController, animated: true, completion: nil)
         }
-        
-        //ナビゲーションバー右側にボタンを作成
-        let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
-        navigationItem.rightBarButtonItem = rightBarButton
-        navigationItem.rightBarButtonItem?.tintColor = .white
-    }
-    
-    //成功しましたログの前にユーザー情報が出てきているので変更
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //ユーザー情報が正しく受け取れるかを確認するメソッド
-        fetchUserInfoFromFirestore()
-        //受け取った情報を使いやすいようにModelに格納する
     }
     
     //ナビゲーションバー右側にボタンを作成
@@ -63,25 +66,17 @@ class ChatListViewController: UIViewController {
         self.present(nav, animated: true, completion: nil)
     }
     
-    //ユーザー情報が正しく受け取れるかを確認するメソッド
-     private func fetchUserInfoFromFirestore() {
-        //Firestoreから保存されている値をフェッチ
-        Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
+    private func fetchLoginUserInfo() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err{
-                print("user情報の取得に失敗しました。\(err)")
+                print("ユーザー情報の取得に失敗しました。\(err)")
                 return
             }
-            snapshots?.documents.forEach({ (snapshot) in
-                let dic = snapshot.data()
-                //フェッチしたdata(dic)をuserに変換
-                let user = User.init(dic: dic)
-                self.users.append(user)
-                self.chatListTableView.reloadData()
-                //念の為確認(ユーザーネームだけ表示する)
-                self.users.forEach { (user) in
-                    print("user.username: ", user.username)
-                }
-            })
+            guard let snapshot = snapshot, let dic = snapshot.data() else { return }
+            
+            let user = User(dic: dic)
+            self.user = user
         }
     }
 }
@@ -95,14 +90,12 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //セルを指定して紐づける
         let cell = chatListTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatListTableViewCell
-        //下にあるChatListTableViewCellにアクセス可能
-        cell.user = users[indexPath.row]
         return cell
     }
     
