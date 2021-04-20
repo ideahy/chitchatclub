@@ -16,33 +16,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7yA-8H-q4m">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7yA-8H-q4m">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellId" rowHeight="70" id="LSE-h1-efZ" customClass="UserListTableViewCell" customModule="ChitChatClub" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellId" rowHeight="80" id="LSE-h1-efZ" customClass="UserListTableViewCell" customModule="ChitChatClub" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LSE-h1-efZ" id="ipD-cM-1a5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3C5-ys-r2J">
-                                                    <rect key="frame" x="26" y="10" width="50" height="50"/>
+                                                    <rect key="frame" x="10" y="7.5" width="65" height="65"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="FMr-O8-grk"/>
+                                                        <constraint firstAttribute="width" constant="65" id="FMr-O8-grk"/>
                                                         <constraint firstAttribute="width" secondItem="3C5-ys-r2J" secondAttribute="height" multiplier="1:1" id="W4v-Fr-czr"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="太朗" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S7u-84-4sA">
-                                                    <rect key="frame" x="91" y="24.5" width="35" height="21"/>
+                                                    <rect key="frame" x="90" y="29.5" width="35" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="3C5-ys-r2J" firstAttribute="leading" secondItem="ipD-cM-1a5" secondAttribute="leadingMargin" constant="10" id="QE9-eq-45g"/>
+                                                <constraint firstItem="3C5-ys-r2J" firstAttribute="leading" secondItem="ipD-cM-1a5" secondAttribute="leading" constant="10" id="MiJ-SS-VnV"/>
                                                 <constraint firstItem="3C5-ys-r2J" firstAttribute="centerY" secondItem="ipD-cM-1a5" secondAttribute="centerY" id="RCN-en-eSW"/>
                                                 <constraint firstItem="S7u-84-4sA" firstAttribute="leading" secondItem="3C5-ys-r2J" secondAttribute="trailing" constant="15" id="Ycg-Lk-juv"/>
                                                 <constraint firstItem="S7u-84-4sA" firstAttribute="centerY" secondItem="ipD-cM-1a5" secondAttribute="centerY" id="gHZ-qQ-9V6"/>
@@ -66,11 +66,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cgv-v5-ZGF">
-                        <barButtonItem key="leftBarButtonItem" title="閉じる" id="L1Z-Bh-5Z0">
-                            <connections>
-                                <action selector="tappedCloseButton:" destination="bIu-ZO-1df" id="TsA-ua-c7b"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="iL1-Ka-sPI">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="qbd-CK-utm">
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
