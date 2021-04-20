@@ -16,6 +16,8 @@ class User {
     let createdAt: Timestamp
     let profileImageUrl: String
     
+    var uid: String?
+    
     //上記の引数をもとにUser配列を作成
     init(dic: [String: Any]) {
         //??はnilだった場合の条件
