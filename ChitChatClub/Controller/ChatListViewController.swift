@@ -10,6 +10,7 @@ import Firebase
 import FirebaseFirestore
 import FirebaseAuth
 import FirebaseStorage
+import Nuke
 
 class ChatListViewController: UIViewController {
 
@@ -49,9 +50,28 @@ class ChatListViewController: UIViewController {
                 let dic = snapshot.data()
                 //取得データをモデルに格納する
                 let chatroom = ChatRoom(dic: dic)
-                self.chatrooms.append(chatroom)
-                print("self.chatrooms.count: ", self.chatrooms.count)
-                self.chatListTableView.reloadData()
+                
+                //partnerの情報も追加
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                chatroom.members.forEach { (memberUid) in
+                    if memberUid != uid {
+                        Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                            if let err = err {
+                                print("パートナーユーザー情報の取得に失敗しました。\(err)")
+                                return
+                            }
+                            
+                            guard let dic = snapshot?.data() else { return }
+                            let user = User(dic: dic)
+                            user.uid = snapshot?.documentID
+                            //相手側のユーザー情報を追加
+                            chatroom.partnerUser = user
+                            self.chatrooms.append(chatroom)
+                            print("self.chatrooms.count: ", self.chatrooms.count)
+                            self.chatListTableView.reloadData()
+                        }
+                    }
+                }
             })
         }
     }
@@ -116,12 +136,15 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return chatrooms.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //セルを指定して紐づける
         let cell = chatListTableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! ChatListTableViewCell
+        
+        cell.chatroom = chatrooms[indexPath.row]
+        
         return cell
     }
     
@@ -137,13 +160,26 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
 class ChatListTableViewCell: UITableViewCell {
     
     //ユーザー情報をここで渡す
-    var user: User? {
-        didSet{
-            if let user = user{
-                partnerLabel.text = user.username
-                //userImageView.image = user?.profileImageUrl
-                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
-                latestMessageLabel.text = user.email
+//    var user: User? {
+//        didSet{
+//            if let user = user{
+//                partnerLabel.text = user.username
+//                //userImageView.image = user?.profileImageUrl
+//                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
+//                latestMessageLabel.text = user.email
+//            }
+//        }
+//    }
+    
+    var chatroom: ChatRoom? {
+        didSet {
+            if let chatroom = chatroom{
+                partnerLabel.text = chatroom.partnerUser?.username
+                
+                guard let url = URL(string: chatroom.partnerUser?.profileImageUrl ?? "") else { return }
+                Nuke.loadImage(with: url, into: userImageView)
+                
+                dateLabel.text = dateFormatterForDateLabel(date: chatroom.createdAt.dateValue())
             }
         }
     }
@@ -167,7 +203,7 @@ class ChatListTableViewCell: UITableViewCell {
     private func dateFormatterForDateLabel(date: Date) -> String{
         let formatter = DateFormatter()
         formatter.dateStyle = .full
-        formatter.timeStyle = .short
+        formatter.timeStyle = .none
         formatter.locale = Locale(identifier: "ja_JP")
         return formatter.string(from: date)
     }
