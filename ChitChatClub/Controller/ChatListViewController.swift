@@ -77,6 +77,7 @@ class ChatListViewController: UIViewController {
     }
     
     private func setupViews() {
+        chatListTableView.tableFooterView = UIView()
         chatListTableView.delegate = self
         chatListTableView.dataSource = self
         
@@ -192,7 +193,7 @@ class ChatListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         //角丸
-        userImageView.layer.cornerRadius = 35
+        userImageView.layer.cornerRadius = 30
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
