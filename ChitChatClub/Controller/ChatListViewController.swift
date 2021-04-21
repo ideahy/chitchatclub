@@ -64,6 +64,10 @@ class ChatListViewController: UIViewController {
         chatroom.documentId = documentChange.document.documentID
         //partnerの情報も追加
         guard let uid = Auth.auth().currentUser?.uid else { return }
+        //自分がメンバーに含まれているかによってチャットルームの表示を変更する
+        let isContain = chatroom.members.contains(uid)
+        if !isContain { return }
+        
         chatroom.members.forEach { (memberUid) in
             if memberUid != uid {
                 Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
