@@ -121,8 +121,22 @@ class ChatListViewController: UIViewController {
         
         //ナビゲーションバー右側にボタンを作成
         let rightBarButton = UIBarButtonItem(title: "新規チャット", style: .plain, target: self, action: #selector(tappedNavRightBarButton))
+        let logoutBarButton = UIBarButtonItem(title: "ログアウト", style: .plain, target: self, action: #selector(tappedLogoutButton))
         navigationItem.rightBarButtonItem = rightBarButton
         navigationItem.rightBarButtonItem?.tintColor = .white
+        navigationItem.leftBarButtonItem = logoutBarButton
+        navigationItem.leftBarButtonItem?.tintColor = .white
+    }
+    
+    @objc private func tappedLogoutButton() {
+        do {
+            try Auth.auth().signOut()
+            let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
+            let signUpViewController = storyboard.instantiateViewController(withIdentifier: "SignUpViewController")
+            self.present(signUpViewController, animated: true, completion: nil)
+        } catch {
+            print("ログアウトに失敗しました。\(error)")
+        }
     }
     
     private func confirmLoggedInUser() {
