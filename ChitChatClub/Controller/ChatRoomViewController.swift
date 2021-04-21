@@ -18,7 +18,7 @@ class ChatRoomViewController: UIViewController {
 
     private let cellId = "cellId"
     //動作用のメッセージ受け渡し配列
-    private var messages = [String]()
+    private var messages = [Message]()
     
     //入力用Viewをインスタンス化
     //selfが呼び出せないのでlazyを追加
@@ -71,7 +71,10 @@ class ChatRoomViewController: UIViewController {
                 switch documentChange.type {
                 case .added:
                     let dic = documentChange.document.data()
-                    print("message dic: ", dic)
+                    let message = Message(dic: dic)
+                    self.messages.append(message)
+                    self.chatRoomTableView.reloadData()
+                    
                 case .modified, .removed:
                     print("nothing to do")
                 }
@@ -124,7 +127,7 @@ extension ChatRoomViewController: UITableViewDelegate,UITableViewDataSource{
         //送信した値を表示する
         //cell.messageTextView.text = messages[indexPath.row]
         //メッセージ幅に合わせてViewを可変にする
-        cell.messageText = messages[indexPath.row]
+        cell.message = messages[indexPath.row]
         return cell
     }
 }
