@@ -19,6 +19,7 @@
 		5E82DB482629119700636647 /* UIColor-Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E82DB472629119700636647 /* UIColor-Extention.swift */; };
 		5E9079C4262DD185007E69CE /* UserList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E9079C3262DD185007E69CE /* UserList.storyboard */; };
 		5E9079C7262E4F0B007E69CE /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9079C6262E4F0B007E69CE /* UserListViewController.swift */; };
+		5E95DADC262FE44000738F6A /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E95DADB262FE44000738F6A /* Message.swift */; };
 		5EEDBE7A262921DF00F17A2B /* ChatRoomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5EEDBE79262921DF00F17A2B /* ChatRoomTableViewCell.xib */; };
 		5EEDBE7E2629248C00F17A2B /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEDBE7D2629248C00F17A2B /* ChatRoomTableViewCell.swift */; };
 		5EF9754626280A9C00661738 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF9754526280A9C00661738 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		5E82DB472629119700636647 /* UIColor-Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor-Extention.swift"; sourceTree = "<group>"; };
 		5E9079C3262DD185007E69CE /* UserList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = UserList.storyboard; sourceTree = "<group>"; };
 		5E9079C6262E4F0B007E69CE /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
+		5E95DADB262FE44000738F6A /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		5EEDBE79262921DF00F17A2B /* ChatRoomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomTableViewCell.xib; sourceTree = "<group>"; };
 		5EEDBE7D2629248C00F17A2B /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		5EF9754226280A9C00661738 /* ChitChatClub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChitChatClub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +124,7 @@
 			children = (
 				5E2EA938262DBFE100A4CB1A /* User.swift */,
 				5E1BAFD8262E7A4D00437704 /* ChatRoom.swift */,
+				5E95DADB262FE44000738F6A /* Message.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -310,6 +313,7 @@
 				5E2EA939262DBFE100A4CB1A /* User.swift in Sources */,
 				5E82DB482629119700636647 /* UIColor-Extention.swift in Sources */,
 				5EEDBE7E2629248C00F17A2B /* ChatRoomTableViewCell.swift in Sources */,
+				5E95DADC262FE44000738F6A /* Message.swift in Sources */,
 				5EF9754826280A9C00661738 /* SceneDelegate.swift in Sources */,
 				5E1BAFD9262E7A4D00437704 /* ChatRoom.swift in Sources */,
 			);
