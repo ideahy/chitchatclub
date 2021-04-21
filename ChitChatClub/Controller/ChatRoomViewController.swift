@@ -40,6 +40,9 @@ class ChatRoomViewController: UIViewController {
         //別ファイルで記述した場合はregisterが必要
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
+        //セーフエリア以外に画面枠を調整したい場合
+        chatRoomTableView.contentInset = .init(top: 0, left: 0, bottom: 60, right: 0)
+        chatRoomTableView.scrollIndicatorInsets = .init(top: 0, left: 0, bottom: 40, right: 0)
         //Firestore内に変更があった場合に呼び出し
         fetchMessages()
     }
@@ -75,7 +78,14 @@ class ChatRoomViewController: UIViewController {
                     message.partnerUser = self.chatroom?.partnerUser
                     
                     self.messages.append(message)
+                    self.messages.sort { (m1, m2) -> Bool in
+                        let m1Date = m1.createdAt.dateValue()
+                        let m2Date = m2.createdAt.dateValue()
+                        return m1Date < m2Date
+                    }
+                    
                     self.chatRoomTableView.reloadData()
+                    self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                     
                 case .modified, .removed:
                     print("nothing to do")
