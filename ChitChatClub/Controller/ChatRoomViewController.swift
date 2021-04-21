@@ -40,6 +40,8 @@ class ChatRoomViewController: UIViewController {
         //別ファイルで記述した場合はregisterが必要
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
+        //Firestore内に変更があった場合に呼び出し
+        fetchMessages()
     }
     
     //入力用Viewインスタンス → 元々あるinputAccessoryViewプロパティをオーバーライドする
@@ -52,6 +54,29 @@ class ChatRoomViewController: UIViewController {
     //もう一つ、元々あるプロパティをオーバーライドする
     override var canBecomeFirstResponder: Bool{
         return true
+    }
+    
+    //すでに保存されているメッセージをルーム内に表示する
+    private func fetchMessages() {
+        //個人チャットルームID
+        guard let chatroomDocId = chatroom?.documentId else { return }
+        //ドキュメントに変更があった場合に呼び出し
+        Firestore.firestore().collection("chatRooms").document(chatroomDocId).collection("messages").addSnapshotListener { (snapshots, err) in
+            if let err = err {
+                print("追加されたメッセージ情報の取得に失敗しました。\(err)")
+                return
+            }
+            //追加があった場合に呼び出し
+            snapshots?.documentChanges.forEach({ (documentChange) in
+                switch documentChange.type {
+                case .added:
+                    let dic = documentChange.document.data()
+                    print("message dic: ", dic)
+                case .modified, .removed:
+                    print("nothing to do")
+                }
+            })
+        }
     }
 }
 
