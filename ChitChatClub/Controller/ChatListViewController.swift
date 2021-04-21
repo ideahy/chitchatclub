@@ -70,20 +70,40 @@ class ChatListViewController: UIViewController {
         
         chatroom.members.forEach { (memberUid) in
             if memberUid != uid {
-                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                Firestore.firestore().collection("users").document(memberUid).getDocument { (userSnapshot, err) in
                     if let err = err {
                         print("パートナーユーザー情報の取得に失敗しました。\(err)")
                         return
                     }
                     
-                    guard let dic = snapshot?.data() else { return }
+                    guard let dic = userSnapshot?.data() else { return }
                     let user = User(dic: dic)
                     user.uid = documentChange.document.documentID
-                    //相手側のユーザー情報を追加
                     chatroom.partnerUser = user
-                    self.chatrooms.append(chatroom)
-                    print("self.chatrooms.count: ", self.chatrooms.count)
-                    self.chatListTableView.reloadData()
+
+                    guard let chatroomId = chatroom.documentId else { return }
+                    let latestMessageId = chatroom.latestMessageId
+                    
+                    if latestMessageId == "" {
+                        
+                        self.chatrooms.append(chatroom)
+                        self.chatListTableView.reloadData()
+                        return
+                    }
+                    
+                    Firestore.firestore().collection("chatRooms").document(chatroomId).collection("messages").document(latestMessageId).getDocument { (messageSnapshot, err) in
+                        if let err = err {
+                            print("最新情報の取得に失敗しました。\(err)")
+                            return
+                        }
+                        //相手側のユーザー情報を追加
+                        guard let dic = messageSnapshot?.data() else { return }
+                        let message = Message(dic: dic)
+                        chatroom.latestMessage = message
+                        
+                        self.chatrooms.append(chatroom)
+                        self.chatListTableView.reloadData()
+                    }
                 }
             }
         }
@@ -174,18 +194,6 @@ extension ChatListViewController: UITableViewDelegate, UITableViewDataSource {
 
 class ChatListTableViewCell: UITableViewCell {
     
-    //ユーザー情報をここで渡す
-    //    var user: User? {
-    //        didSet{
-    //            if let user = user{
-    //                partnerLabel.text = user.username
-    //                //userImageView.image = user?.profileImageUrl
-    //                dateLabel.text = dateFormatterForDateLabel(date: user.createdAt.dateValue())
-    //                latestMessageLabel.text = user.email
-    //            }
-    //        }
-    //    }
-    
     var chatroom: ChatRoom? {
         didSet {
             if let chatroom = chatroom{
@@ -194,7 +202,8 @@ class ChatListTableViewCell: UITableViewCell {
                 guard let url = URL(string: chatroom.partnerUser?.profileImageUrl ?? "") else { return }
                 Nuke.loadImage(with: url, into: userImageView)
                 
-                dateLabel.text = dateFormatterForDateLabel(date: chatroom.createdAt.dateValue())
+                dateLabel.text = dateFormatterForDateLabel(date: chatroom.latestMessage?.createdAt.dateValue() ?? Date())
+                latestMessageLabel.text = chatroom.latestMessage?.message
             }
         }
     }
@@ -217,8 +226,8 @@ class ChatListTableViewCell: UITableViewCell {
     //作成時間表記のフォーマット
     private func dateFormatterForDateLabel(date: Date) -> String{
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .none
+        formatter.dateStyle = .full
+        formatter.timeStyle = .short
         formatter.locale = Locale(identifier: "ja_JP")
         return formatter.string(from: date)
     }
