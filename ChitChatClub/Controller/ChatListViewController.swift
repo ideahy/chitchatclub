@@ -217,7 +217,7 @@ class ChatListTableViewCell: UITableViewCell {
     //作成時間表記のフォーマット
     private func dateFormatterForDateLabel(date: Date) -> String{
         let formatter = DateFormatter()
-        formatter.dateStyle = .full
+        formatter.dateStyle = .short
         formatter.timeStyle = .none
         formatter.locale = Locale(identifier: "ja_JP")
         return formatter.string(from: date)
