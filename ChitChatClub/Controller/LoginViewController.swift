@@ -119,4 +119,9 @@ extension LoginViewController: UITextFieldDelegate {
             loginButton.backgroundColor = .rgb(red: 0, green: 185, blue: 0)
         }
     }
+    
+    //リターンキーで閉じる
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }
