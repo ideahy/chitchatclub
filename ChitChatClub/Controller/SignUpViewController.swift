@@ -24,6 +24,7 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNotification()
         setupViews()
     }
     
@@ -31,6 +32,20 @@ class SignUpViewController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    private func setupNotification() {
+        //キーボードが出てくる時の通知
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        print("keyboardWillShow")
+    }
+
+    @objc func keyboardWillHide() {
+        print("keyboardWillHide")
     }
     
     private func setupViews() {
