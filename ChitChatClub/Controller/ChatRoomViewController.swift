@@ -15,11 +15,10 @@ class ChatRoomViewController: UIViewController {
     var user: User?
     var chatroom: ChatRoom?
 
-
     private let cellId = "cellId"
     //動作用のメッセージ受け渡し配列
     private var messages = [Message]()
-    private let accessaryHeight: CGFloat = 100
+    private let accessoryHeight: CGFloat = 100
     private let tableViewContentInset: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
     private let tableViewIndicatorInset: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
     private var safeAreaBottom: CGFloat {
@@ -30,7 +29,7 @@ class ChatRoomViewController: UIViewController {
     //selfが呼び出せないのでlazyを追加
     private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
-        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: accessaryHeight)
+        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: accessoryHeight)
         //Delegateを使って入力テキストを大元のコントローラに渡す(ChatInputAccessoryView続き)
         view.delegate = self
         return view
@@ -45,13 +44,13 @@ class ChatRoomViewController: UIViewController {
         setupChatRoomTableView()
         fetchMessages()
     }
-    
+
     private func setupNotification() {
         //キーボードが出てくる時の通知
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
+
     private func setupChatRoomTableView() {
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
@@ -64,19 +63,20 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.keyboardDismissMode = .interactive
         chatRoomTableView.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
     }
-    
+
     @objc func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
-        
+
         if let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
-            
-            if keyboardFrame.height <= accessaryHeight { return }
-            
+
+            if keyboardFrame.height <= accessoryHeight { return }
+
             let top = keyboardFrame.height - safeAreaBottom
             var moveY = -(top - chatRoomTableView.contentOffset.y)
             //最下部以外の時はズレるので微調整
             if chatRoomTableView.contentOffset.y != -60 { moveY += 60 }
             let contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+
             chatRoomTableView.contentInset = contentInset
             chatRoomTableView.scrollIndicatorInsets = contentInset
             chatRoomTableView.contentOffset = CGPoint(x: 0, y: moveY)
@@ -185,6 +185,7 @@ extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
 
             }
         }
+
     }
 
     //"latestMessageId"をこちら側で作成しておくためのメソッド
