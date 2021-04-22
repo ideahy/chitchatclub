@@ -13,13 +13,16 @@ import PKHUD
 
 class SignUpViewController: UIViewController {
     
-    
     @IBOutlet weak var profileImageButton: UIButton!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var alreadyHaveAccountButton: UIButton!
+    
+    private var safeAreaBottom: CGFloat {
+        self.view.safeAreaInsets.bottom
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +43,26 @@ class SignUpViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
+    //notification = キーボードの情報を通知
     @objc func keyboardWillShow(notification: NSNotification) {
-        print("keyboardWillShow")
+        
+        if !usernameTextField.isFirstResponder {
+            return
+        }
+        
+        if self.view.frame.origin.y == 0 {
+            if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+                let top = keyboardFrame.height - safeAreaBottom
+                //画面外に行きすぎるので100ずらす
+                self.view.frame.origin.y -= top - 200
+            }
+        }
     }
 
     @objc func keyboardWillHide() {
-        print("keyboardWillHide")
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     private func setupViews() {
