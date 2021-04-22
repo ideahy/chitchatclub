@@ -61,6 +61,15 @@ class LoginViewController: UIViewController {
         loginButton.layer.cornerRadius = 8
         dontHaveAccountButton.addTarget(self, action: #selector(tappedDontHaveAccountButton), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(tappedLoginButton), for: .touchUpInside)
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        //初期はボタン押せない
+        
+        loginButton.isEnabled = false
+        loginButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
+
     }
 
     @objc private func tappedDontHaveAccountButton() {
@@ -93,4 +102,21 @@ class LoginViewController: UIViewController {
         self.view.endEditing(true)
     }
 
+}
+
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        //textField全てに適用
+        let emailIsEmpty = emailTextField.text?.isEmpty ?? false
+        let passwordIsEmpty = passwordTextField.text?.isEmpty ?? false
+        //一つでも空があるとボタンを押せなくする
+        if emailIsEmpty || passwordIsEmpty {
+            loginButton.isEnabled = false
+            loginButton.backgroundColor = .rgb(red: 100, green: 100, blue: 100)
+        } else {
+            loginButton.isEnabled = true
+            loginButton.backgroundColor = .rgb(red: 0, green: 185, blue: 0)
+        }
+    }
 }
