@@ -19,12 +19,18 @@ class ChatRoomViewController: UIViewController {
     private let cellId = "cellId"
     //動作用のメッセージ受け渡し配列
     private var messages = [Message]()
+    private let accessaryHeight: CGFloat = 100
+    private let tableViewContentInset: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+    private let tableViewIndicatorInset: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+    private var safeAreaBottom: CGFloat {
+        self.view.safeAreaInsets.bottom
+    }
 
     //入力用Viewをインスタンス化
     //selfが呼び出せないのでlazyを追加
     private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
-        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 100)
+        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: accessaryHeight)
         //Delegateを使って入力テキストを大元のコントローラに渡す(ChatInputAccessoryView続き)
         view.delegate = self
         return view
@@ -35,18 +41,51 @@ class ChatRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupNotification()
+        setupChatRoomTableView()
+        fetchMessages()
+    }
+    
+    private func setupNotification() {
+        //キーボードが出てくる時の通知
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func setupChatRoomTableView() {
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
         //別ファイルで記述した場合はregisterが必要
         chatRoomTableView.register(UINib(nibName: "ChatRoomTableViewCell", bundle: nil), forCellReuseIdentifier: cellId)
         chatRoomTableView.backgroundColor = .rgb(red: 118, green: 140, blue: 180)
         //セーフエリア以外に画面枠を調整したい場合
-        chatRoomTableView.contentInset = .init(top: 60, left: 0, bottom: 0, right: 0)
-        chatRoomTableView.scrollIndicatorInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+        chatRoomTableView.contentInset = tableViewContentInset
+        chatRoomTableView.scrollIndicatorInsets = tableViewIndicatorInset
         chatRoomTableView.keyboardDismissMode = .interactive
         chatRoomTableView.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
-        //Firestore内に変更があった場合に呼び出し
-        fetchMessages()
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        
+        if let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
+            
+            if keyboardFrame.height <= accessaryHeight { return }
+            
+            let top = keyboardFrame.height - safeAreaBottom
+            var moveY = -(top - chatRoomTableView.contentOffset.y)
+            //最下部以外の時はズレるので微調整
+            if chatRoomTableView.contentOffset.y != -60 { moveY += 60 }
+            let contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+            chatRoomTableView.contentInset = contentInset
+            chatRoomTableView.scrollIndicatorInsets = contentInset
+            chatRoomTableView.contentOffset = CGPoint(x: 0, y: moveY)
+        }
+    }
+
+    @objc func keyboardWillHide() {
+        chatRoomTableView.contentInset = tableViewContentInset
+        chatRoomTableView.scrollIndicatorInsets = tableViewIndicatorInset
     }
 
     //入力用Viewインスタンス → 元々あるinputAccessoryViewプロパティをオーバーライドする
