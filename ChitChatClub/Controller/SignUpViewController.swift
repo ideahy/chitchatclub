@@ -191,6 +191,11 @@ extension SignUpViewController: UITextFieldDelegate {
             registerButton.backgroundColor = .rgb(red: 0, green: 185, blue: 0)
         }
     }
+    
+    //リターンキーで閉じる
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }
 
 extension SignUpViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
