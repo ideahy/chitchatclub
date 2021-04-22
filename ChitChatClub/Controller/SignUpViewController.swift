@@ -71,7 +71,7 @@ class SignUpViewController: UIViewController {
     
     @objc private func tappedRegisterButton() {
         //画像をStorageに保存する
-        let image = profileImageButton.imageView?.image ?? UIImage(named: "person_noImage")
+        let image = profileImageButton.imageView?.image ?? UIImage(named: "0")
         guard let uploadImage = image?.jpegData(compressionQuality: 0.3) else { return }
         
         HUD.show(.progress)
