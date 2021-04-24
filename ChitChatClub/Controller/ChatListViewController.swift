@@ -33,12 +33,12 @@ class ChatListViewController: UIViewController {
 
         setupViews()
         confirmLoggedInUser()
-        fetchChatroomsInfoFromFirestore()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        fetchChatroomsInfoFromFirestore()
         fetchLoginUserInfo()
     }
 
