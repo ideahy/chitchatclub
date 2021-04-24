@@ -33,24 +33,24 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tUv-S7-3vD">
-                        <rect key="frame" x="341" y="66" width="36" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tUv-S7-3vD">
+                        <rect key="frame" x="86" y="98" width="36" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="ここにメッセージが入ります" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="LLo-5C-aaV">
-                        <rect key="frame" x="210" y="25" width="200" height="68"/>
+                    <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="ここにメッセージが入ります" translatesAutoresizingMaskIntoConstraints="NO" id="LLo-5C-aaV">
+                        <rect key="frame" x="160" y="25" width="250" height="68"/>
                         <color key="backgroundColor" red="0.60392156862745094" green="0.8784313725490196" blue="0.38039215686274508" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="200" id="Lui-EE-zEj"/>
+                            <constraint firstAttribute="width" constant="250" id="Lui-EE-zEj"/>
                         </constraints>
                         <color key="textColor" systemColor="labelColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWn-eZ-Hcm">
-                        <rect key="frame" x="166" y="66" width="36" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qWn-eZ-Hcm">
+                        <rect key="frame" x="374" y="98" width="36" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -58,16 +58,16 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="eaN-38-afy" firstAttribute="top" secondItem="7Ij-oa-G58" secondAttribute="top" constant="25" id="12Y-Th-CnB"/>
+                    <constraint firstItem="tUv-S7-3vD" firstAttribute="leading" secondItem="eaN-38-afy" secondAttribute="leading" id="A5d-5y-3Rf"/>
                     <constraint firstItem="eaN-38-afy" firstAttribute="leading" secondItem="97E-0T-sLY" secondAttribute="trailing" constant="10" id="B1N-4B-wZx"/>
                     <constraint firstItem="LLo-5C-aaV" firstAttribute="top" secondItem="7Ij-oa-G58" secondAttribute="top" constant="25" id="Ndv-n8-Uon"/>
                     <constraint firstAttribute="trailing" secondItem="LLo-5C-aaV" secondAttribute="trailing" constant="20" symbolic="YES" id="ORZ-uB-KR1"/>
                     <constraint firstAttribute="bottom" secondItem="LLo-5C-aaV" secondAttribute="bottom" constant="25" id="QRF-L1-zmQ"/>
-                    <constraint firstItem="eaN-38-afy" firstAttribute="bottom" secondItem="tUv-S7-3vD" secondAttribute="bottom" constant="10" id="cTc-uN-AMa"/>
-                    <constraint firstAttribute="bottom" secondItem="qWn-eZ-Hcm" secondAttribute="bottom" constant="35" id="eXg-2H-bzA"/>
-                    <constraint firstItem="tUv-S7-3vD" firstAttribute="leading" secondItem="eaN-38-afy" secondAttribute="trailing" constant="5" id="gNy-ew-tvJ"/>
+                    <constraint firstItem="qWn-eZ-Hcm" firstAttribute="top" secondItem="LLo-5C-aaV" secondAttribute="bottom" constant="5" id="cLE-jW-48n"/>
+                    <constraint firstItem="tUv-S7-3vD" firstAttribute="top" secondItem="eaN-38-afy" secondAttribute="bottom" constant="5" id="cja-6Y-TWu"/>
+                    <constraint firstItem="qWn-eZ-Hcm" firstAttribute="trailing" secondItem="LLo-5C-aaV" secondAttribute="trailing" id="oc6-TH-MmC"/>
                     <constraint firstAttribute="bottom" secondItem="eaN-38-afy" secondAttribute="bottom" constant="25" id="rzZ-6L-Dkx"/>
                     <constraint firstItem="97E-0T-sLY" firstAttribute="leading" secondItem="7Ij-oa-G58" secondAttribute="leading" constant="16" id="tcg-bC-jVq"/>
-                    <constraint firstItem="LLo-5C-aaV" firstAttribute="leading" secondItem="qWn-eZ-Hcm" secondAttribute="trailing" constant="8" id="xx5-ZJ-sUF"/>
                     <constraint firstItem="97E-0T-sLY" firstAttribute="centerY" secondItem="7Ij-oa-G58" secondAttribute="centerY" id="zAT-Wf-E3Y"/>
                 </constraints>
             </tableViewCellContentView>

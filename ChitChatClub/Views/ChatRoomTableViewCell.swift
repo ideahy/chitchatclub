@@ -96,7 +96,7 @@ class ChatRoomTableViewCell: UITableViewCell {
     //幅を調整するためのメソッド
     private func estimateFrameForTextView(text: String) -> CGRect {
         //マックス値の設定
-        let size = CGSize(width: 200, height: 1000)
+        let size = CGSize(width: 250, height: 1000)
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)], context: nil)
